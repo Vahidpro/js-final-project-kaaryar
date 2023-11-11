@@ -6,9 +6,7 @@
 	box-sizing: border-box;
 	font-family: "Poppins", sans-serif;
 }
-body {
-	/* background-color: #d9d9d9; */
-}
+
 nav {
 	background-color: #357aff;
 	color: white;
@@ -38,11 +36,18 @@ section {
 	background-color: #d8d6d6;
 }
 
-.todo-list-section .todo-item {
+.todo-list-section .todo-item,
+.done-section .todo-item {
 	background-color: #e9e9e9;
 }
 
 ul,
 ol {
 	padding: 0;
+}
+
+.section-title {
+	font-size: x-large;
+	font-weight: 700;
+	margin: 14px 0;
 }
