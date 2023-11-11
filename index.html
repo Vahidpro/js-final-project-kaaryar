@@ -24,13 +24,54 @@
     </nav>
     <main>
         <div class="wrapper">
-            <div class="input-container ">
-                <form action="submit" class="d-flex mx-4 my-3 justify-content-between p-2  border bord rounded-4">
+            <section class="input-section">
+                <form action="submit" class="d-flex my-3 justify-content-between p-2  border bord rounded-4">
                     <input class=" border-0 w-100" type="text" id="input" placeholder="Add a new task..." required>
-                    <button disabled class="btn border-0"><img src="./assets/add.svg" alt=""></button>
+                    <button disabled class="btn border-0 p-0"><img src="./assets/add.svg" alt=""></button>
                 </form>
-            </div>
+            </section>
+            <!-- To-Do List Section -->
+            <section class="todo-list-section rounded-4">
+                <ul class="todo-container border-1 border rounded-4 ">
+                    <li class="todo-item rounded-4 px-2 m-2">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <span class="fw-bold">Take a walk</span>
+                            <div class="icons">
+                                <button class="btn"><img src="./assets/delete.svg" alt=""></button>
+                                <button class="btn"><img src="./assets/done.svg" alt=""></button>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="todo-item rounded-4 px-2 m-2">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <span class="fw-bold">Take a walk</span>
+                            <div class="icons">
+                                <button class="btn"><img src="./assets/delete.svg" alt=""></button>
+                                <button class="btn"><img src="./assets/done.svg" alt=""></button>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="todo-item rounded-4 px-2 m-2">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <span class="fw-bold">Take a walk</span>
+                            <div class="icons">
+                                <button class="btn"><img src="./assets/delete.svg" alt=""></button>
+                                <button class="btn"><img src="./assets/done.svg" alt=""></button>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="todo-item rounded-4 px-2 m-2">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <span class="fw-bold">Take a walk</span>
+                            <div class="icons">
+                                <button class="btn"><img src="./assets/delete.svg" alt=""></button>
+                                <button class="btn"><img src="./assets/done.svg" alt=""></button>
+                            </div>
+                        </div>
+                    </li>
+            </section>
         </div>
+
     </main>
     <script src="./main.js"></script>
 </body>
