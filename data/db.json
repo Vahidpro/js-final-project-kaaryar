@@ -1,0 +1,13 @@
+{
+	"todos": [
+		{ "id": 0, "Take a walk": "todo 1" },
+		{ "id": 1, "Go to grocery store": "todo 2" },
+		{ "id": 3, "Do project": "todo 4" },
+		{ "id": 1, "Call Alice": "todo 2" },
+		{ "id": 1, "Practice German": "todo 2" }
+	],
+	"dones": [
+		{ "id": 2, "Go to gym": "todo 3" },
+		{ "id": 1, "Meet friends": "todo 2" }
+	]
+}
