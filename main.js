@@ -1,5 +1,7 @@
 pendingTodosContainer = document.querySelector(".pending-todos-container");
 doneTodosContainer = document.querySelector(".done-todos-container");
+todoInputEl = document.querySelector(".todo-input");
+addButton = document.querySelector(".add-btn");
 
 renderPendingTask = (task) => {
 	pendingTodosContainer.innerHTML += `
@@ -55,3 +57,12 @@ const getDoneTodosData = () => {
 
 getPendingTodosData();
 getDoneTodosData();
+
+todoInputEl.addEventListener("input", (e) => {
+	console.log(todoInputEl.value);
+	if (todoInputEl.value.trim() == "") {
+		addButton.disabled = true;
+	} else {
+		addButton.disabled = false;
+	}
+});
