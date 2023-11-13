@@ -1,7 +1,8 @@
-todoContainer = document.querySelector(".todo-container");
+pendingTodosContainer = document.querySelector(".pending-todos-container");
+doneTodosContainer = document.querySelector(".done-todos-container");
 
-renderTask = (task) => {
-	todoContainer.innerHTML += `
+renderPendingTask = (task) => {
+	pendingTodosContainer.innerHTML += `
 	<li class="todo-item rounded-4 px-2 m-2">
                         <div class="d-flex align-items-center justify-content-between">
                             <span class="">${task.title}</span>
@@ -13,20 +14,44 @@ renderTask = (task) => {
                     </li>
 	`;
 };
+renderDoneTask = (task) => {
+	doneTodosContainer.innerHTML += `
+                    <li class="todo-item rounded-4 px-2 m-2">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <span class=" text-decoration-line-through">${task.title}</span>
+                            <div class="icons">
+                                <button class="btn"><img src="./assets/delete.svg" alt=""></button>
+                                <button class="btn"><img src="./assets/undo.svg" alt=""></button>
+                            </div>
+                        </div>
+                    </li>
+	`;
+};
 
-const url = "http://localhost:3000/todos";
+const url = "http://localhost:3000/";
 
-const getTodosData = () => {
-	fetch(url)
+const getPendingTodosData = () => {
+	fetch(url + "todos")
 		.then((res) => {
 			return res.json();
 		})
 		.then((data) => {
 			data.forEach((task) => {
-				renderTask(task);
+				renderPendingTask(task);
 			});
-			// renderTask(data[0]);
+		});
+};
+const getDoneTodosData = () => {
+	fetch(url + "dones")
+		.then((res) => {
+			return res.json();
+		})
+		.then((data) => {
+			data.forEach((task) => {
+				renderDoneTask(task);
+			});
 		});
 };
 
-getTodosData();
+getPendingTodosData();
+getDoneTodosData();
