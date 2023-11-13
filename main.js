@@ -7,7 +7,9 @@ renderPendingTask = (task) => {
 	pendingTodosContainer.innerHTML += `
 	<li class="todo-item rounded-4 px-2 m-2">
                         <div class="d-flex align-items-center justify-content-between">
-                            <span class="">${task.title}</span>
+                            <span class="">${
+																													task.title ? task.title : task
+																												}</span>
                             <div class="icons">
                                 <button class="btn"><img src="./assets/delete.svg" alt=""></button>
                                 <button class="btn"><img src="./assets/done.svg" alt=""></button>
@@ -59,10 +61,14 @@ getPendingTodosData();
 getDoneTodosData();
 
 todoInputEl.addEventListener("input", (e) => {
-	console.log(todoInputEl.value);
 	if (todoInputEl.value.trim() == "") {
 		addButton.disabled = true;
 	} else {
 		addButton.disabled = false;
 	}
+});
+
+addButton.addEventListener("click", (e) => {
+	e.preventDefault();
+	renderPendingTask(todoInputEl.value);
 });
