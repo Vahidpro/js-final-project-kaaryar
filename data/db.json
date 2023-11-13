@@ -1,13 +1,13 @@
 {
 	"todos": [
-		{ "id": 0, "Take a walk": "todo 1" },
-		{ "id": 1, "Go to grocery store": "todo 2" },
-		{ "id": 3, "Do project": "todo 4" },
-		{ "id": 1, "Call Alice": "todo 2" },
-		{ "id": 1, "Practice German": "todo 2" }
+		{ "id": 0, "title": "Take a walk" },
+		{ "id": 1, "title": "Go to grocery store" },
+		{ "id": 3, "title": "Do project" },
+		{ "id": 1, "title": "Call Alice" },
+		{ "id": 1, "title": "Practice German" }
 	],
 	"dones": [
-		{ "id": 2, "Go to gym": "todo 3" },
-		{ "id": 1, "Meet friends": "todo 2" }
+		{ "id": 2, "title": "Go to gym" },
+		{ "id": 1, "title": "Meet friends" }
 	]
 }

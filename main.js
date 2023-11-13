@@ -1,11 +1,15 @@
-// import axios from "axios";
-
 todoContainer = document.querySelector(".todo-container");
 
-const getTodos = () => {
-	axios.get("/data/db.json").then((res) => {
-		console.log(res);
-	});
+const url = "http://localhost:3000/todos";
+
+const getTodosData = () => {
+	fetch(url)
+		.then((res) => {
+			return res.json();
+		})
+		.then((data) => {
+			console.log(data);
+		});
 };
 
-getTodos();
+getTodosData();
