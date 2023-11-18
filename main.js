@@ -6,14 +6,14 @@ doneButton = document.querySelector(".done-btn");
 
 renderPendingTask = (task) => {
 	pendingTodosContainer.innerHTML += `
-	<li class="todo-item rounded-4 px-2 m-2 id="${task.id}">
+	<li class="todo-item rounded-4 px-2 m-2 " id="${task.id}">
                         <div class="d-flex align-items-center justify-content-between">
                             <span class="">${
 																													task.title ? task.title : task
 																												}</span>
                             <div class="icons">
-                                <button class="btn "><img class="btn-delete" src="./assets/delete.svg" alt=""></button>
-                                <button class="btn "><img class="btn-done" src="./assets/done.svg" alt=""></button>
+                                <a href="#" class="btn "><img class="btn-delete" src="./assets/delete.svg" alt=""></a>
+                                <a href="#" class="btn "><img class="btn-done" src="./assets/done.svg" alt=""></a>
                             </div>
                         </div>
                     </li>
@@ -33,10 +33,10 @@ renderDoneTask = (task) => {
 	`;
 };
 
-const url = "http://localhost:3000/";
+const url = "http://localhost:3000";
 
 const getPendingTodosData = () => {
-	fetch(url + "todos")
+	fetch(url + "/todos")
 		.then((res) => {
 			return res.json();
 		})
@@ -47,7 +47,7 @@ const getPendingTodosData = () => {
 		});
 };
 const getDoneTodosData = () => {
-	fetch(url + "dones")
+	fetch(url + "/dones")
 		.then((res) => {
 			return res.json();
 		})
@@ -77,7 +77,21 @@ addButton.addEventListener("click", (e) => {
 document
 	.querySelector(".pending-todos-container")
 	.addEventListener("click", (e) => {
+		e.preventDefault();
 		if (e.target.classList.contains("btn-delete")) {
-			e.target.parentElement.parentElement.parentElement.remove();
+			deleteTodo(
+				e.target.parentElement.parentElement.parentElement.parentElement.id,
+				e
+			);
 		}
 	});
+
+const deleteTodo = async (taskId, e) => {
+	e.preventDefault();
+	try {
+		await axios.delete(`${url}/todos/${taskId}`);
+		e.target.parentElement.parentElement.parentElement.remove();
+	} catch (error) {
+		console.error(error);
+	}
+};
