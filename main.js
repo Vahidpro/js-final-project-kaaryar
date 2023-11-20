@@ -4,6 +4,16 @@ todoInputEl = document.querySelector(".todo-input");
 addButton = document.querySelector(".add-btn");
 doneButton = document.querySelector(".done-btn");
 
+// Functions
+const fetchData = async () => {
+	try {
+		const res = await fetch(url + "/todos");
+		const data = await res.json();
+		return data;
+	} catch (error) {
+		console.error(error);
+	}
+};
 renderPendingTask = (task) => {
 	pendingTodosContainer.innerHTML += `
 	<li class="todo-item rounded-4 px-2 m-2 " id="${task.id}">
@@ -21,12 +31,12 @@ renderPendingTask = (task) => {
 };
 renderDoneTask = (task) => {
 	doneTodosContainer.innerHTML += `
-                    <li class="todo-item rounded-4 px-2 m-2" >
+                    <li class="todo-item rounded-4 px-2 m-2" id="${task.id}">
                         <div class="d-flex align-items-center justify-content-between">
                             <span class=" text-decoration-line-through">${task.title}</span>
                             <div class="icons">
-                                <button class="btn "><img class="btn-delete" src="./assets/delete.svg" alt=""></button>
-                                <button class="btn "><img class="btn-undo" src="./assets/undo.svg" alt=""></button>
+                                <a class="btn "><img class="btn-delete" src="./assets/delete.svg" alt=""></a>
+                                <a class="btn "><img class="btn-undo" src="./assets/undo.svg" alt=""></a>
                             </div>
                         </div>
                     </li>
@@ -81,15 +91,34 @@ document
 		if (e.target.classList.contains("btn-delete")) {
 			deleteTodo(
 				e.target.parentElement.parentElement.parentElement.parentElement.id,
+				"todos",
+				e
+			);
+		}
+	});
+document
+	.querySelector(".done-todos-container")
+	.addEventListener("click", (e) => {
+		e.preventDefault();
+		if (e.target.classList.contains("btn-delete")) {
+			console.log(
+				e.target.parentElement.parentElement.parentElement.parentElement
+			);
+			console.log(
+				e.target.parentElement.parentElement.parentElement.parentElement.id
+			);
+			deleteTodo(
+				e.target.parentElement.parentElement.parentElement.parentElement.id,
+				"dones",
 				e
 			);
 		}
 	});
 
-const deleteTodo = async (taskId, e) => {
+const deleteTodo = async (taskId, fromList, e) => {
 	e.preventDefault();
 	try {
-		await axios.delete(`${url}/todos/${taskId}`);
+		await axios.delete(`${url}/${fromList}/${taskId}`);
 		e.target.parentElement.parentElement.parentElement.remove();
 	} catch (error) {
 		console.error(error);
