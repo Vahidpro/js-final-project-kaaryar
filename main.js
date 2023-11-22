@@ -88,6 +88,7 @@ todoInputEl.addEventListener("input", (e) => {
 addButton.addEventListener("click", (e) => {
 	e.preventDefault();
 	createPendingTask(todoInputEl.value);
+	addTaskToDB("todos", { title: todoInputEl.value });
 });
 
 document
