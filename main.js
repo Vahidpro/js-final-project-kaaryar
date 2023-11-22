@@ -41,8 +41,8 @@ createDoneTask = (task) => {
 	`;
 };
 
-const getTodoData = async (taskId, e) => {
-	const response = await axios.get(url + "/todos/" + taskId);
+const getTodoData = async (taskId, fromList) => {
+	const response = await axios.get(`${url}/${fromList}/${taskId}`);
 	const data = response.data;
 	const userData = { id: data.id, title: data.title };
 	return userData;
@@ -65,9 +65,16 @@ const initialRender = async () => {
 initialRender();
 
 const doneHandlerFunction = async (taskId, e) => {
-	const userData = await getTodoData(taskId);
+	const userData = await getTodoData(taskId, "todos");
 	addTaskToDB("dones", userData);
+	createDoneTask(userData);
 	deleteTodo(taskId, "todos", e);
+};
+const undoHandlerFunction = async (taskId, e) => {
+	const userData = await getTodoData(taskId, "dones");
+	addTaskToDB("todos", userData);
+	createPendingTask(userData);
+	deleteTodo(taskId, "dones", e);
 };
 
 todoInputEl.addEventListener("input", (e) => {
@@ -95,20 +102,22 @@ document
 			doneHandlerFunction(taskId, e);
 		}
 	});
+
 document
 	.querySelector(".done-todos-container")
 	.addEventListener("click", (e) => {
 		e.preventDefault();
+		const taskId =
+			e.target.parentElement.parentElement.parentElement.parentElement.id;
+		console.log(taskId);
 		if (e.target.classList.contains("btn-delete")) {
-			deleteTodo(
-				e.target.parentElement.parentElement.parentElement.parentElement.id,
-				"dones",
-				e
-			);
+			deleteTodo(taskId, "dones", e);
+		} else if (e.target.classList.contains("btn-undo")) {
+			undoHandlerFunction(taskId, e);
 		}
 	});
 
-const deleteTodo = async (taskId, fromList, e) => {
+var deleteTodo = async (taskId, fromList, e) => {
 	e.preventDefault();
 	try {
 		await axios.delete(`${url}/${fromList}/${taskId}`);

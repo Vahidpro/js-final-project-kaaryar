@@ -1,9 +1,26 @@
 {
-  "todos": [],
-  "dones": [
-    {
-      "id": 6,
-      "title": "Practice German"
-    }
-  ]
+	"todos": [
+		{
+			"id": 2,
+			"title": "Do project"
+		},
+		{
+			"id": 3,
+			"title": "Call Alice"
+		},
+		{
+			"id": 4,
+			"title": "Practice German"
+		}
+	],
+	"dones": [
+		{
+			"id": 0,
+			"title": "Go to gym"
+		},
+		{
+			"id": 1,
+			"title": "Meet friends"
+		}
+	]
 }
