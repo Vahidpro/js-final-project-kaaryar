@@ -5,16 +5,14 @@ addButton = document.querySelector(".add-btn");
 doneButton = document.querySelector(".done-btn");
 
 // Functions
-const fetchData = async () => {
+addTaskToDB = async (toList, userData) => {
 	try {
-		const res = await fetch(url + "/todos");
-		const data = await res.json();
-		return data;
+		await axios.post(`${url}/${toList}`, userData);
 	} catch (error) {
-		console.error(error);
+		console.log(error);
 	}
 };
-renderPendingTask = (task) => {
+createPendingTask = (task) => {
 	pendingTodosContainer.innerHTML += `
 	<li class="todo-item rounded-4 px-2 m-2 " id="${task.id}">
                         <div class="d-flex align-items-center justify-content-between">
@@ -29,7 +27,7 @@ renderPendingTask = (task) => {
                     </li>
 	`;
 };
-renderDoneTask = (task) => {
+createDoneTask = (task) => {
 	doneTodosContainer.innerHTML += `
                     <li class="todo-item rounded-4 px-2 m-2" id="${task.id}">
                         <div class="d-flex align-items-center justify-content-between">
@@ -43,33 +41,34 @@ renderDoneTask = (task) => {
 	`;
 };
 
+const getTodoData = async (taskId, e) => {
+	const response = await axios.get(url + "/todos/" + taskId);
+	const data = response.data;
+	const userData = { id: data.id, title: data.title };
+	return userData;
+};
+
 const url = "http://localhost:3000";
 
-const getPendingTodosData = () => {
-	fetch(url + "/todos")
-		.then((res) => {
-			return res.json();
-		})
-		.then((data) => {
-			data.forEach((task) => {
-				renderPendingTask(task);
-			});
-		});
-};
-const getDoneTodosData = () => {
-	fetch(url + "/dones")
-		.then((res) => {
-			return res.json();
-		})
-		.then((data) => {
-			data.forEach((task) => {
-				renderDoneTask(task);
-			});
-		});
+const initialRender = async () => {
+	const pendingTasks = await axios.get(url + "/todos");
+	pendingTasks.data.forEach((element) => {
+		createPendingTask(element);
+	});
+
+	const doneTasks = await axios.get(url + "/dones");
+	doneTasks.data.forEach((element) => {
+		createDoneTask(element);
+	});
 };
 
-getPendingTodosData();
-getDoneTodosData();
+initialRender();
+
+const doneHandlerFunction = async (taskId, e) => {
+	const userData = await getTodoData(taskId);
+	addTaskToDB("dones", userData);
+	deleteTodo(taskId, "todos", e);
+};
 
 todoInputEl.addEventListener("input", (e) => {
 	if (todoInputEl.value.trim() == "") {
@@ -81,19 +80,19 @@ todoInputEl.addEventListener("input", (e) => {
 
 addButton.addEventListener("click", (e) => {
 	e.preventDefault();
-	renderPendingTask(todoInputEl.value);
+	createPendingTask(todoInputEl.value);
 });
 
 document
 	.querySelector(".pending-todos-container")
 	.addEventListener("click", (e) => {
 		e.preventDefault();
+		const taskId =
+			e.target.parentElement.parentElement.parentElement.parentElement.id;
 		if (e.target.classList.contains("btn-delete")) {
-			deleteTodo(
-				e.target.parentElement.parentElement.parentElement.parentElement.id,
-				"todos",
-				e
-			);
+			deleteTodo(taskId, "todos", e);
+		} else if (e.target.classList.contains("btn-done")) {
+			doneHandlerFunction(taskId, e);
 		}
 	});
 document
@@ -101,12 +100,6 @@ document
 	.addEventListener("click", (e) => {
 		e.preventDefault();
 		if (e.target.classList.contains("btn-delete")) {
-			console.log(
-				e.target.parentElement.parentElement.parentElement.parentElement
-			);
-			console.log(
-				e.target.parentElement.parentElement.parentElement.parentElement.id
-			);
 			deleteTodo(
 				e.target.parentElement.parentElement.parentElement.parentElement.id,
 				"dones",
