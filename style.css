@@ -35,6 +35,15 @@ section {
 	margin: 4px 2px;
 }
 
+.btn-edit {
+	width: 26px;
+	opacity: 0;
+	transition: all 0.1s;
+}
+.pending-todos-container li div:hover .btn-edit {
+	opacity: 1;
+}
+
 .todo-list-section {
 	background-color: #d8d6d6;
 }

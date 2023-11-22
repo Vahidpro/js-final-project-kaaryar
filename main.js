@@ -20,8 +20,11 @@ createPendingTask = (task) => {
 																													task.title ? task.title : task
 																												}</span>
                             <div class="icons">
+							 
+                                <a href="#" class="btn "><img class="btn-edit " src="./assets/edit-fill.svg" alt=""></a>
                                 <a href="#" class="btn "><img class="btn-delete" src="./assets/delete.svg" alt=""></a>
                                 <a href="#" class="btn "><img class="btn-done" src="./assets/done.svg" alt=""></a>
+                              
                             </div>
                         </div>
                     </li>
