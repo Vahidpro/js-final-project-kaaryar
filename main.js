@@ -80,6 +80,56 @@ const undoHandlerFunction = async (taskId, e) => {
 	deleteTodo(taskId, "dones", e);
 };
 
+const editTodo = async (taskId, e) => {
+	const editButton = e.target;
+	const taskItem = e.target.closest(".todo-item");
+	let taskInput;
+
+	editButton.src = "./assets/round-done.svg";
+	editButton.classList.add("btn-edit-done");
+	editButton.classList.remove("btn-edit");
+
+	const taskSpan = taskItem.querySelector("span");
+
+	taskInput = document.createElement("input");
+	taskInput.classList.add("edit-input");
+	taskInput.type = "text";
+	taskInput.value = taskSpan?.textContent;
+
+	taskSpan.replaceWith(taskInput);
+
+	taskInput.focus();
+
+	taskInput.addEventListener("keyup", async (e) => {
+		if (e.keyCode === 13) {
+			await axios.patch(`${url}/todos/${taskId}`, {
+				title: taskInput.value,
+			});
+
+			editButton.src = "./assets/edit-fill.svg";
+
+			const newSpan = document.createElement("span");
+			newSpan.textContent = taskInput.value;
+			taskInput.replaceWith(newSpan);
+
+			isEditing = false;
+		}
+	});
+};
+const doneEdit = async (taskId, e) => {
+	const editButton = e.target;
+	taskInput = document.querySelector(".edit-input");
+	console.log(taskId);
+	await axios.patch(`${url}/todos/${taskId}`, {
+		title: taskInput.value,
+	});
+
+	editButton.src = "./assets/edit-fill.svg";
+
+	const newSpan = document.createElement("span");
+	newSpan.textContent = taskInput.value;
+	taskInput.replaceWith(newSpan);
+};
 todoInputEl.addEventListener("input", (e) => {
 	if (todoInputEl.value.trim() == "") {
 		addButton.disabled = true;
@@ -104,6 +154,10 @@ document
 			deleteTodo(taskId, "todos", e);
 		} else if (e.target.classList.contains("btn-done")) {
 			doneHandlerFunction(taskId, e);
+		} else if (e.target.classList.contains("btn-edit")) {
+			editTodo(taskId, e);
+		} else if (e.target.classList.contains("btn-edit-done")) {
+			doneEdit(taskId, e);
 		}
 	});
 
