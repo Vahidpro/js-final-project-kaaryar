@@ -44,7 +44,7 @@ section {
 .btn-edit-done {
 	width: 26px;
 }
-.pending-todos-container li div:hover .btn-edit {
+.pending-todos-container li:hover .btn-edit {
 	opacity: 1;
 }
 

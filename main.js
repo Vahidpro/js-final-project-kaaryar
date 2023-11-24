@@ -118,6 +118,8 @@ const editTodo = async (taskId, e) => {
 };
 const doneEdit = async (taskId, e) => {
 	const editButton = e.target;
+	editButton.classList.remove("btn-edit-done");
+	editButton.classList.add("btn-edit");
 	taskInput = document.querySelector(".edit-input");
 	console.log(taskId);
 	await axios.patch(`${url}/todos/${taskId}`, {
