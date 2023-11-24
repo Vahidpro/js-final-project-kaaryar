@@ -1,19 +1,11 @@
 {
   "todos": [
     {
-      "id": 2,
-      "title": "Do project"
-    },
-    {
-      "id": 3,
-      "title": "Call Alice"
-    },
-    {
       "id": 4,
-      "title": "Practice German88"
+      "title": "Call Alice4"
     },
     {
-      "title": "85688",
+      "title": "85688d",
       "id": 5
     },
     {
@@ -22,12 +14,20 @@
     },
     {
       "id": 7,
-      "title": "dgd"
-    },
-    {
-      "title": "eiwfh isdjf aosfsdoiaf zc iasd fosaijfxzc wsmoixzf cwsoixzcj;osdixjz mic sxzcioidcx",
-      "id": 8
+      "title": "5555656ddd"
     }
   ],
-  "dones": []
+  "dones": [
+    {
+      "id": 2,
+      "title": "Do project"
+    },
+    {
+      "id": 8,
+      "title": "eiwfh isdjf aosfsdoiaf zc iasd fosaijfxzc wsmoixzf cwsoixzcj;osdixjz mic sxzcioidcx"
+    },
+    {
+      "id": 9
+    }
+  ]
 }

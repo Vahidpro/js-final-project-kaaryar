@@ -57,6 +57,16 @@ section {
 	background-color: #e9e9e9;
 }
 
+.edit-input {
+	background-color: #c9c2c2;
+	border: none;
+	border-radius: 8px;
+	padding: 6px;
+}
+.edit-input:focus {
+	border: none;
+}
+
 ul,
 ol {
 	padding: 0;
@@ -67,4 +77,11 @@ ol {
 	font-weight: 700;
 	margin: 8px;
 	padding: 8px;
+}
+
+.todo-item .icons {
+	max-width: 40%;
+}
+.todo-item input {
+	max-width: 50%;
 }

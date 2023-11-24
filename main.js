@@ -4,6 +4,8 @@ todoInputEl = document.querySelector(".todo-input");
 addButton = document.querySelector(".add-btn");
 doneButton = document.querySelector(".done-btn");
 
+const url = "http://localhost:3010";
+
 // Functions
 addTaskToDB = async (toList, userData) => {
 	try {
@@ -14,19 +16,19 @@ addTaskToDB = async (toList, userData) => {
 };
 createPendingTask = (task) => {
 	pendingTodosContainer.innerHTML += `
-	<li class="todo-item rounded-4 px-2 m-2 " id="${task.id}">
-                        <div class="d-flex align-items-center justify-content-between">
+	<li class="todo-item rounded-4 px-2 m-2 d-flex align-items-center justify-content-between " id="${
+		task.id
+	}">                   
                             <span class="">${
 																													task.title ? task.title : task
 																												}</span>
-                            <div class="icons">
+                            <div class="icons d-flex">
 							 
                                 <a href="#" class="btn "><img class="btn-edit " src="./assets/edit-fill.svg" alt=""></a>
                                 <a href="#" class="btn "><img class="btn-delete" src="./assets/delete.svg" alt=""></a>
                                 <a href="#" class="btn "><img class="btn-done" src="./assets/done.svg" alt=""></a>
                               
                             </div>
-                        </div>
                     </li>
 	`;
 };
@@ -50,8 +52,6 @@ const getTodoData = async (taskId, fromList) => {
 	const userData = { id: data.id, title: data.title };
 	return userData;
 };
-
-const url = "http://localhost:3000";
 
 const initialRender = async () => {
 	const pendingTasks = await axios.get(url + "/todos");
@@ -148,10 +148,9 @@ document
 	.querySelector(".pending-todos-container")
 	.addEventListener("click", (e) => {
 		e.preventDefault();
-		const taskId =
-			e.target.parentElement.parentElement.parentElement.parentElement.id;
+		const taskId = e.target.parentElement.parentElement.parentElement.id;
 		if (e.target.classList.contains("btn-delete")) {
-			deleteTodo(taskId, "todos", e);
+			deleteTodo("todos", taskId, e);
 		} else if (e.target.classList.contains("btn-done")) {
 			doneHandlerFunction(taskId, e);
 		} else if (e.target.classList.contains("btn-edit")) {
@@ -175,9 +174,11 @@ document
 		}
 	});
 
-var deleteTodo = async (taskId, fromList, e) => {
+var deleteTodo = async (fromList, taskId, e) => {
 	e.preventDefault();
+	console.log("clicked");
 	try {
+		console.log(`${url}/${fromList}/${taskId}`);
 		await axios.delete(`${url}/${fromList}/${taskId}`);
 		e.target.parentElement.parentElement.parentElement.remove();
 	} catch (error) {
