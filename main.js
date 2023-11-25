@@ -1,49 +1,44 @@
 pendingTodosContainer = document.querySelector(".pending-todos-container");
 doneTodosContainer = document.querySelector(".done-todos-container");
 todoInputEl = document.querySelector(".todo-input");
-addButton = document.querySelector(".add-btn");
-doneButton = document.querySelector(".done-btn");
+addButton = document.querySelector(".btn-add");
+doneButton = document.querySelector(".btn-done");
 
+// Global Variables
 const url = "http://localhost:3010";
 
 // Functions
-addTaskToDB = async (toList, userData) => {
+addNewTaskToDB = async (toTheList, userData) => {
 	try {
-		await axios.post(`${url}/${toList}`, userData);
+		await axios.post(`${url}/${toTheList}`, userData);
 	} catch (error) {
-		console.log(error);
+		throw new Error(error);
 	}
 };
-createPendingTask = (task) => {
-	pendingTodosContainer.innerHTML += `
-	<li class="todo-item rounded-4 px-2 m-2 d-flex align-items-center justify-content-between " id="${
-		task.id
-	}">                   
-                            <span class="">${
-																													task.title ? task.title : task
-																												}</span>
-                            <div class="icons d-flex">
-							 
-                                <a href="#" class="btn "><img class="btn-edit " src="./assets/edit-fill.svg" alt=""></a>
-                                <a href="#" class="btn "><img class="btn-delete" src="./assets/delete.svg" alt=""></a>
-                                <a href="#" class="btn "><img class="btn-done" src="./assets/done.svg" alt=""></a>
-                              
-                            </div>
-                    </li>
-	`;
-};
-createDoneTask = (task) => {
-	doneTodosContainer.innerHTML += `
-                    <li class="todo-item rounded-4 px-2 m-2" id="${task.id}">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <span class=" text-decoration-line-through">${task.title}</span>
-                            <div class="icons">
-                                <a class="btn "><img class="btn-delete" src="./assets/delete.svg" alt=""></a>
-                                <a class="btn "><img class="btn-undo" src="./assets/undo.svg" alt=""></a>
-                            </div>
-                        </div>
-                    </li>
-	`;
+createTask = (task, isPending) => {
+	let container = isPending ? pendingTodosContainer : doneTodosContainer;
+
+	container.innerHTML += `
+		<li class="todo-item rounded-4 px-2 m-2 d-flex align-items-center justify-content-between " id="${
+			task.id
+		}">                   
+			<span class="${isPending ? "" : "text-decoration-line-through"}">${
+		task.title ? task.title : task
+	}</span>
+			<div class="icons d-flex">
+			${
+				isPending
+					? '<a href="#" class="btn"><img class="btn-edit" src="./assets/edit-fill.svg" alt="edit-icon"></a>'
+					: ""
+			}
+				<a href="#" class="btn"><img class="btn-delete" src="./assets/delete.svg" alt="delete-icon"></a>
+				${
+					isPending
+						? '<a href="#" class="btn"><img class="btn-done" src="./assets/done.svg" alt="done-icon"></a>'
+						: '<a class="btn"><img class="btn-undo" src="./assets/undo.svg" alt="undo-icon"></a>'
+				}
+			</div>
+		</li>`;
 };
 
 const getTodoData = async (taskId, fromList) => {
@@ -56,12 +51,12 @@ const getTodoData = async (taskId, fromList) => {
 const initialRender = async () => {
 	const pendingTasks = await axios.get(url + "/todos");
 	pendingTasks.data.forEach((element) => {
-		createPendingTask(element);
+		createTask(element, true);
 	});
 
 	const doneTasks = await axios.get(url + "/dones");
 	doneTasks.data.forEach((element) => {
-		createDoneTask(element);
+		createTask(element, false);
 	});
 };
 
@@ -69,15 +64,15 @@ initialRender();
 
 const doneHandlerFunction = async (taskId, e) => {
 	const userData = await getTodoData(taskId, "todos");
-	addTaskToDB("dones", userData);
-	createDoneTask(userData);
-	deleteTodo(taskId, "todos", e);
+	addNewTaskToDB("dones", userData);
+	createTask(userData, false);
+	deleteTodo("todos", taskId, e);
 };
 const undoHandlerFunction = async (taskId, e) => {
 	const userData = await getTodoData(taskId, "dones");
-	addTaskToDB("todos", userData);
-	createPendingTask(userData);
-	deleteTodo(taskId, "dones", e);
+	addNewTaskToDB("todos", userData);
+	createTask(userData, true);
+	deleteTodo("dones", taskId, e);
 };
 
 const editTodo = async (taskId, e) => {
@@ -142,8 +137,8 @@ todoInputEl.addEventListener("input", (e) => {
 
 addButton.addEventListener("click", (e) => {
 	e.preventDefault();
-	createPendingTask(todoInputEl.value);
-	addTaskToDB("todos", { title: todoInputEl.value });
+	createTask(todoInputEl.value, true);
+	addNewTaskToDB("todos", { title: todoInputEl.value });
 });
 
 document
@@ -166,11 +161,9 @@ document
 	.querySelector(".done-todos-container")
 	.addEventListener("click", (e) => {
 		e.preventDefault();
-		const taskId =
-			e.target.parentElement.parentElement.parentElement.parentElement.id;
-		console.log(taskId);
+		const taskId = e.target.parentElement.parentElement.parentElement.id;
 		if (e.target.classList.contains("btn-delete")) {
-			deleteTodo(taskId, "dones", e);
+			deleteTodo("dones", taskId, e);
 		} else if (e.target.classList.contains("btn-undo")) {
 			undoHandlerFunction(taskId, e);
 		}
@@ -178,9 +171,7 @@ document
 
 var deleteTodo = async (fromList, taskId, e) => {
 	e.preventDefault();
-	console.log("clicked");
 	try {
-		console.log(`${url}/${fromList}/${taskId}`);
 		await axios.delete(`${url}/${fromList}/${taskId}`);
 		e.target.parentElement.parentElement.parentElement.remove();
 	} catch (error) {
