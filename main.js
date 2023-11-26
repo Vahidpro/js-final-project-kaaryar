@@ -41,26 +41,23 @@ createTask = (task, isPending) => {
 		</li>`;
 };
 
-const getTodoData = async (taskId, fromList) => {
-	const response = await axios.get(`${url}/${fromList}/${taskId}`);
+const getTodoData = async (taskId, listName) => {
+	const response = await axios.get(`${url}/${listName}/${taskId}`);
 	const data = response.data;
 	const userData = { id: data.id, title: data.title };
 	return userData;
 };
 
-const initialRender = async () => {
-	const pendingTasks = await axios.get(url + "/todos");
-	pendingTasks.data.forEach((element) => {
-		createTask(element, true);
-	});
+const initialRender = async (listName) => {
+	const tasks = await axios.get(`${url}/${listName}`);
 
-	const doneTasks = await axios.get(url + "/dones");
-	doneTasks.data.forEach((element) => {
-		createTask(element, false);
+	tasks.data.forEach((element) => {
+		listName === "todos" ? createTask(element, true) : createTask(element, false);
 	});
 };
 
-initialRender();
+initialRender("todos");
+initialRender("dones");
 
 const doneHandlerFunction = async (taskId, e) => {
 	const userData = await getTodoData(taskId, "todos");
@@ -169,10 +166,10 @@ document
 		}
 	});
 
-var deleteTodo = async (fromList, taskId, e) => {
+var deleteTodo = async (listName, taskId, e) => {
 	e.preventDefault();
 	try {
-		await axios.delete(`${url}/${fromList}/${taskId}`);
+		await axios.delete(`${url}/${listName}/${taskId}`);
 		e.target.parentElement.parentElement.parentElement.remove();
 	} catch (error) {
 		console.error(error);
