@@ -15,6 +15,16 @@ addNewTaskToDB = async (toTheList, userData) => {
 		throw new Error(error);
 	}
 };
+
+const deleteTask = async (listName, taskId, e) => {
+	e.preventDefault();
+	try {
+		await axios.delete(`${url}/${listName}/${taskId}`);
+		e.target.parentElement.parentElement.parentElement.remove();
+	} catch (error) {
+		console.error(error);
+	}
+};
 createTask = (task, isInTodoList) => {
 	let container = isInTodoList ? todoTasksContainer : doneTasksContainer;
 
@@ -144,7 +154,6 @@ addButton.addEventListener("click", (e) => {
 	addNewTaskToDB("todoTasksList", { title: taskInput.value });
 });
 
-// Event Listeners
 document.querySelector(".tasks-container").addEventListener("click", (e) => {
 	e.preventDefault();
 
@@ -164,13 +173,3 @@ document.querySelector(".tasks-container").addEventListener("click", (e) => {
 		undoHandler(taskId, e);
 	}
 });
-
-var deleteTask = async (listName, taskId, e) => {
-	e.preventDefault();
-	try {
-		await axios.delete(`${url}/${listName}/${taskId}`);
-		e.target.parentElement.parentElement.parentElement.remove();
-	} catch (error) {
-		console.error(error);
-	}
-};
