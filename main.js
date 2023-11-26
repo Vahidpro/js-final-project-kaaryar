@@ -1,6 +1,6 @@
 pendingTodosContainer = document.querySelector(".pending-todos-container");
 doneTodosContainer = document.querySelector(".done-todos-container");
-todoInputEl = document.querySelector(".todo-input");
+taskInput = document.querySelector(".todo-input");
 addButton = document.querySelector(".btn-add");
 doneButton = document.querySelector(".btn-done");
 
@@ -74,7 +74,7 @@ const undoHandler = async (taskId, e) => {
 	deleteTask("doneTasksList", taskId, e);
 };
 
-const editTodo = async (taskId, e) => {
+const editMode = async (taskId, e) => {
 	const editButton = e.target;
 	const taskItem = e.target.closest(".todo-item");
 	let taskInput;
@@ -94,8 +94,8 @@ const editTodo = async (taskId, e) => {
 
 	taskInput.focus();
 
-	taskInput.addEventListener("keyup", async (e) => {
-		if (e.keyCode === 13) {
+	taskInput.addEventListener("keydown", async (e) => {
+		if (e.key === "Enter") {
 			await axios.patch(`${url}/todoTasksList/${taskId}`, {
 				title: taskInput.value,
 			});
@@ -110,12 +110,11 @@ const editTodo = async (taskId, e) => {
 		}
 	});
 };
-const doneEdit = async (taskId, e) => {
+const editTask = async (taskId, e) => {
 	const editButton = e.target;
 	editButton.classList.remove("btn-edit-done");
 	editButton.classList.add("btn-edit");
 	taskInput = document.querySelector(".edit-input");
-	console.log(taskId);
 	await axios.patch(`${url}/todoTasksList/${taskId}`, {
 		title: taskInput.value,
 	});
@@ -126,18 +125,21 @@ const doneEdit = async (taskId, e) => {
 	newSpan.textContent = taskInput.value;
 	taskInput.replaceWith(newSpan);
 };
-todoInputEl.addEventListener("input", (e) => {
-	if (todoInputEl.value.trim() == "") {
+
+// New task input validation
+taskInput.addEventListener("input", (e) => {
+	if (taskInput.value.trim() == "") {
 		addButton.disabled = true;
 	} else {
 		addButton.disabled = false;
 	}
 });
 
+// Add a new task
 addButton.addEventListener("click", (e) => {
 	e.preventDefault();
-	createTask(todoInputEl.value, true);
-	addNewTaskToDB("todoTasksList", { title: todoInputEl.value });
+	createTask(taskInput.value, true);
+	addNewTaskToDB("todoTasksList", { title: taskInput.value });
 });
 
 document
@@ -150,9 +152,9 @@ document
 		} else if (e.target.classList.contains("btn-done")) {
 			doneHandler(taskId, e);
 		} else if (e.target.classList.contains("btn-edit")) {
-			editTodo(taskId, e);
+			editMode(taskId, e);
 		} else if (e.target.classList.contains("btn-edit-done")) {
-			doneEdit(taskId, e);
+			editTask(taskId, e);
 		}
 	});
 
