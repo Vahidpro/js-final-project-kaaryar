@@ -1,5 +1,5 @@
-pendingTodosContainer = document.querySelector(".pending-todos-container");
-doneTodosContainer = document.querySelector(".done-todos-container");
+todoTasksContainer = document.querySelector(".todo-tasks-container");
+doneTasksContainer = document.querySelector(".done-tasks-container");
 taskInput = document.querySelector(".todo-input");
 addButton = document.querySelector(".btn-add");
 doneButton = document.querySelector(".btn-done");
@@ -16,7 +16,7 @@ addNewTaskToDB = async (toTheList, userData) => {
 	}
 };
 createTask = (task, isPending) => {
-	let container = isPending ? pendingTodosContainer : doneTodosContainer;
+	let container = isPending ? todoTasksContainer : doneTasksContainer;
 
 	container.innerHTML += `
 		<li class="todo-item rounded-4 px-2 m-2 d-flex align-items-center justify-content-between " id="${
@@ -143,7 +143,7 @@ addButton.addEventListener("click", (e) => {
 });
 
 document
-	.querySelector(".pending-todos-container")
+	.querySelector(".todo-tasks-container")
 	.addEventListener("click", (e) => {
 		e.preventDefault();
 		const taskId = e.target.parentElement.parentElement.parentElement.id;
@@ -159,7 +159,7 @@ document
 	});
 
 document
-	.querySelector(".done-todos-container")
+	.querySelector(".done-tasks-container")
 	.addEventListener("click", (e) => {
 		e.preventDefault();
 		const taskId = e.target.parentElement.parentElement.parentElement.id;
