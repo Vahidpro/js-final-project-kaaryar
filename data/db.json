@@ -1,10 +1,6 @@
 {
   "todoTasksList": [
     {
-      "id": 6,
-      "title": "Practice German5"
-    },
-    {
       "id": 7,
       "title": "Go to gym"
     },
@@ -13,26 +9,18 @@
       "title": "Take a breakss"
     },
     {
-      "title": "65455ssss",
+      "title": "65455sssss",
       "id": 8
-    },
-    {
-      "title": "ss586",
-      "id": 9
-    },
-    {
-      "title": "dfd",
-      "id": 10
     }
   ],
   "doneTasksList": [
     {
-      "id": 4,
-      "title": "Do project5"
-    },
-    {
       "id": 5,
       "title": "Call Alice"
+    },
+    {
+      "id": 9,
+      "title": "ss586"
     }
   ]
 }

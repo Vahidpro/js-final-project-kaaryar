@@ -15,25 +15,27 @@ addNewTaskToDB = async (toTheList, userData) => {
 		throw new Error(error);
 	}
 };
-createTask = (task, isPending) => {
-	let container = isPending ? todoTasksContainer : doneTasksContainer;
+createTask = (task, isInTodoList) => {
+	let container = isInTodoList ? todoTasksContainer : doneTasksContainer;
 
 	container.innerHTML += `
 		<li class="todo-item rounded-4 px-2 m-2 d-flex align-items-center justify-content-between " id="${
 			task.id
 		}">                   
-			<span class="${isPending ? "" : "text-decoration-line-through"}">${
+			<span class="${isInTodoList ? "" : "text-decoration-line-through"}">${
 		task.title ? task.title : task
 	}</span>
 			<div class="icons d-flex">
 			${
-				isPending
+				isInTodoList
 					? '<a href="#" class="btn"><img class="btn-edit" src="./assets/edit-fill.svg" alt="edit-icon"></a>'
 					: ""
 			}
-				<a href="#" class="btn"><img class="btn-delete" src="./assets/delete.svg" alt="delete-icon"></a>
+				<a href="#" class="btn"><img class="btn-delete${
+					isInTodoList ? "-todo" : "-done"
+				}" src="./assets/delete.svg" alt="delete-icon"></a>
 				${
-					isPending
+					isInTodoList
 						? '<a href="#" class="btn"><img class="btn-done" src="./assets/done.svg" alt="done-icon"></a>'
 						: '<a class="btn"><img class="btn-undo" src="./assets/undo.svg" alt="undo-icon"></a>'
 				}
@@ -142,33 +144,26 @@ addButton.addEventListener("click", (e) => {
 	addNewTaskToDB("todoTasksList", { title: taskInput.value });
 });
 
-document
-	.querySelector(".todo-tasks-container")
-	.addEventListener("click", (e) => {
-		e.preventDefault();
-		const taskId = e.target.parentElement.parentElement.parentElement.id;
-		if (e.target.classList.contains("btn-delete")) {
-			deleteTask("todoTasksList", taskId, e);
-		} else if (e.target.classList.contains("btn-done")) {
-			doneHandler(taskId, e);
-		} else if (e.target.classList.contains("btn-edit")) {
-			editMode(taskId, e);
-		} else if (e.target.classList.contains("btn-edit-done")) {
-			editTask(taskId, e);
-		}
-	});
+// Event Listeners
+document.querySelector(".tasks-container").addEventListener("click", (e) => {
+	e.preventDefault();
 
-document
-	.querySelector(".done-tasks-container")
-	.addEventListener("click", (e) => {
-		e.preventDefault();
-		const taskId = e.target.parentElement.parentElement.parentElement.id;
-		if (e.target.classList.contains("btn-delete")) {
-			deleteTask("doneTasksList", taskId, e);
-		} else if (e.target.classList.contains("btn-undo")) {
-			undoHandler(taskId, e);
-		}
-	});
+	const taskId = e.target.parentElement.parentElement.parentElement.id;
+
+	if (e.target.classList.contains("btn-delete-todo")) {
+		deleteTask("todoTasksList", taskId, e);
+	} else if (e.target.classList.contains("btn-delete-done")) {
+		deleteTask("doneTasksList", taskId, e);
+	} else if (e.target.classList.contains("btn-done")) {
+		doneHandler(taskId, e);
+	} else if (e.target.classList.contains("btn-edit")) {
+		editMode(taskId, e);
+	} else if (e.target.classList.contains("btn-edit-done")) {
+		editTask(taskId, e);
+	} else if (e.target.classList.contains("btn-undo")) {
+		undoHandler(taskId, e);
+	}
+});
 
 var deleteTask = async (listName, taskId, e) => {
 	e.preventDefault();
