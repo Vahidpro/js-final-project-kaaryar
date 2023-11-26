@@ -51,25 +51,27 @@ const getTodoData = async (taskId, listName) => {
 const initialRender = async (listName) => {
 	const tasks = await axios.get(`${url}/${listName}`);
 
-	tasks.data.forEach((element) => {
-		listName === "todos" ? createTask(element, true) : createTask(element, false);
+	tasks.data.forEach((task) => {
+		listName === "todoTasksList"
+			? createTask(task, true)
+			: createTask(task, false);
 	});
 };
 
-initialRender("todos");
-initialRender("dones");
+initialRender("todoTasksList");
+initialRender("doneTasksList");
 
-const doneHandlerFunction = async (taskId, e) => {
-	const userData = await getTodoData(taskId, "todos");
-	addNewTaskToDB("dones", userData);
+const doneHandler = async (taskId, e) => {
+	const userData = await getTodoData(taskId, "todoTasksList");
+	addNewTaskToDB("doneTasksList", userData);
 	createTask(userData, false);
-	deleteTodo("todos", taskId, e);
+	deleteTask("todoTasksList", taskId, e);
 };
-const undoHandlerFunction = async (taskId, e) => {
-	const userData = await getTodoData(taskId, "dones");
-	addNewTaskToDB("todos", userData);
+const undoHandler = async (taskId, e) => {
+	const userData = await getTodoData(taskId, "doneTasksList");
+	addNewTaskToDB("todoTasksList", userData);
 	createTask(userData, true);
-	deleteTodo("dones", taskId, e);
+	deleteTask("doneTasksList", taskId, e);
 };
 
 const editTodo = async (taskId, e) => {
@@ -94,7 +96,7 @@ const editTodo = async (taskId, e) => {
 
 	taskInput.addEventListener("keyup", async (e) => {
 		if (e.keyCode === 13) {
-			await axios.patch(`${url}/todos/${taskId}`, {
+			await axios.patch(`${url}/todoTasksList/${taskId}`, {
 				title: taskInput.value,
 			});
 
@@ -114,7 +116,7 @@ const doneEdit = async (taskId, e) => {
 	editButton.classList.add("btn-edit");
 	taskInput = document.querySelector(".edit-input");
 	console.log(taskId);
-	await axios.patch(`${url}/todos/${taskId}`, {
+	await axios.patch(`${url}/todoTasksList/${taskId}`, {
 		title: taskInput.value,
 	});
 
@@ -135,7 +137,7 @@ todoInputEl.addEventListener("input", (e) => {
 addButton.addEventListener("click", (e) => {
 	e.preventDefault();
 	createTask(todoInputEl.value, true);
-	addNewTaskToDB("todos", { title: todoInputEl.value });
+	addNewTaskToDB("todoTasksList", { title: todoInputEl.value });
 });
 
 document
@@ -144,9 +146,9 @@ document
 		e.preventDefault();
 		const taskId = e.target.parentElement.parentElement.parentElement.id;
 		if (e.target.classList.contains("btn-delete")) {
-			deleteTodo("todos", taskId, e);
+			deleteTask("todoTasksList", taskId, e);
 		} else if (e.target.classList.contains("btn-done")) {
-			doneHandlerFunction(taskId, e);
+			doneHandler(taskId, e);
 		} else if (e.target.classList.contains("btn-edit")) {
 			editTodo(taskId, e);
 		} else if (e.target.classList.contains("btn-edit-done")) {
@@ -160,13 +162,13 @@ document
 		e.preventDefault();
 		const taskId = e.target.parentElement.parentElement.parentElement.id;
 		if (e.target.classList.contains("btn-delete")) {
-			deleteTodo("dones", taskId, e);
+			deleteTask("doneTasksList", taskId, e);
 		} else if (e.target.classList.contains("btn-undo")) {
-			undoHandlerFunction(taskId, e);
+			undoHandler(taskId, e);
 		}
 	});
 
-var deleteTodo = async (listName, taskId, e) => {
+var deleteTask = async (listName, taskId, e) => {
 	e.preventDefault();
 	try {
 		await axios.delete(`${url}/${listName}/${taskId}`);

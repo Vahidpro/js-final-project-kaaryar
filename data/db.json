@@ -1,34 +1,19 @@
 {
-  "todos": [
-    {
-      "id": 2,
-      "title": "Take a break"
-    },
-    {
-      "id": 3,
-      "title": "Go to grocery store"
-    },
-    {
-      "id": 4,
-      "title": "Do project"
-    },
-    {
-      "id": 5,
-      "title": "Call Alice"
-    },
-    {
-      "id": 6,
-      "title": "Practice German"
-    }
-  ],
-  "dones": [
-    {
-      "id": 0,
-      "title": "Go to gym"
-    },
-    {
-      "id": 1,
-      "title": "Meet friends"
-    }
-  ]
+	"todoTasksList": [
+		{ "id": 2, "title": "Take a break" },
+		{ "id": 3, "title": "Go to grocery store" },
+		{ "id": 4, "title": "Do project" },
+		{ "id": 5, "title": "Call Alice" },
+		{ "id": 6, "title": "Practice German" }
+	],
+	"doneTasksList": [
+		{
+			"id": 0,
+			"title": "Go to gym"
+		},
+		{
+			"id": 1,
+			"title": "Meet friends"
+		}
+	]
 }
