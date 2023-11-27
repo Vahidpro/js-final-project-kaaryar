@@ -16,15 +16,6 @@ addNewTaskToDB = async (toTheList, userData) => {
 	}
 };
 
-const deleteTask = async (listName, taskId, e) => {
-	e.preventDefault();
-	try {
-		await axios.delete(`${url}/${listName}/${taskId}`);
-		e.target.parentElement.parentElement.parentElement.remove();
-	} catch (error) {
-		console.error(error);
-	}
-};
 createTask = (task, isInTodoList) => {
 	let container = isInTodoList ? todoTasksContainer : doneTasksContainer;
 
@@ -51,6 +42,16 @@ createTask = (task, isInTodoList) => {
 				}
 			</div>
 		</li>`;
+};
+
+const deleteTask = async (listName, taskId, e) => {
+	e.preventDefault();
+	try {
+		await axios.delete(`${url}/${listName}/${taskId}`);
+		e.target.parentElement.parentElement.parentElement.remove();
+	} catch (error) {
+		throw new Error(error);
+	}
 };
 
 const getTodoData = async (taskId, listName) => {
