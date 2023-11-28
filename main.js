@@ -6,6 +6,7 @@ doneButton = document.querySelector(".btn-done");
 
 // Global Variables
 const url = "http://localhost:3000";
+let nextId;
 
 // Functions
 addNewTaskToDB = async (toTheList, userData) => {
@@ -16,13 +17,34 @@ addNewTaskToDB = async (toTheList, userData) => {
 	}
 };
 
+const getNextId = async () => {
+	try {
+		const todoTasks = await axios.get(`${url}/todoTasksList`);
+		const doneTasks = await axios.get(`${url}/doneTasksList`);
+
+		const todoIds = todoTasks.data.map((task) => task.id);
+		const doneIds = doneTasks.data.map((task) => task.id);
+
+		const allIds = [...todoIds, ...doneIds];
+		nextId = Math.max(...allIds) + 1;
+	} catch (error) {
+		throw new Error(error);
+	}
+};
+
+getNextId();
+
 createTask = (task, isInTodoList) => {
+	if (task.id) {
+		id = task.id;
+	} else {
+		id = nextId;
+	}
+
 	let container = isInTodoList ? todoTasksContainer : doneTasksContainer;
 
 	container.innerHTML += `
-		<li class="todo-item rounded-4 px-2 m-2 d-flex align-items-center justify-content-between " id="${
-			task.id
-		}">                   
+		<li class="todo-item rounded-4 px-2 m-2 d-flex align-items-center justify-content-between " id="${id}">                   
 			<span class="${isInTodoList ? "" : "text-decoration-line-through"}">${
 		task.title ? task.title : task
 	}</span>
@@ -152,7 +174,7 @@ taskInput.addEventListener("input", (e) => {
 addButton.addEventListener("click", (e) => {
 	e.preventDefault();
 	createTask(taskInput.value, true);
-	addNewTaskToDB("todoTasksList", { title: taskInput.value });
+	addNewTaskToDB("todoTasksList", { title: taskInput.value, id: nextId++ });
 });
 
 document.querySelector(".tasks-container").addEventListener("click", (e) => {
