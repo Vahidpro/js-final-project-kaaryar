@@ -5,7 +5,7 @@ addButton = document.querySelector(".btn-add");
 doneButton = document.querySelector(".btn-done");
 
 // Global Variables
-const url = "http://localhost:3010";
+const url = "http://localhost:3000";
 
 // Functions
 addNewTaskToDB = async (toTheList, userData) => {
