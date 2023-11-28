@@ -112,7 +112,7 @@ const undoHandler = async (taskId, e) => {
 const editMode = async (taskId, e) => {
 	const editButton = e.target;
 	const taskItem = e.target.closest(".todo-item");
-	let taskInput;
+	let editTaskInput;
 
 	editButton.src = "./assets/round-done.svg";
 	editButton.classList.add("btn-edit-done");
@@ -120,26 +120,26 @@ const editMode = async (taskId, e) => {
 
 	const taskSpan = taskItem.querySelector("span");
 
-	taskInput = document.createElement("input");
-	taskInput.classList.add("edit-input");
-	taskInput.type = "text";
-	taskInput.value = taskSpan?.textContent;
+	editTaskInput = document.createElement("input");
+	editTaskInput.classList.add("edit-input");
+	editTaskInput.type = "text";
+	editTaskInput.value = taskSpan?.textContent;
 
-	taskSpan.replaceWith(taskInput);
+	taskSpan.replaceWith(editTaskInput);
 
-	taskInput.focus();
+	editTaskInput.focus();
 
-	taskInput.addEventListener("keydown", async (e) => {
+	editTaskInput.addEventListener("keydown", async (e) => {
 		if (e.key === "Enter") {
 			await axios.patch(`${url}/todoTasksList/${taskId}`, {
-				title: taskInput.value,
+				title: editTaskInput.value,
 			});
 
 			editButton.src = "./assets/edit-fill.svg";
 
 			const newSpan = document.createElement("span");
-			newSpan.textContent = taskInput.value;
-			taskInput.replaceWith(newSpan);
+			newSpan.textContent = editTaskInput.value;
+			editTaskInput.replaceWith(newSpan);
 
 			isEditing = false;
 		}
@@ -149,16 +149,16 @@ const editTask = async (taskId, e) => {
 	const editButton = e.target;
 	editButton.classList.remove("btn-edit-done");
 	editButton.classList.add("btn-edit");
-	taskInput = document.querySelector(".edit-input");
+	editTaskInput = document.querySelector(".edit-input");
 	await axios.patch(`${url}/todoTasksList/${taskId}`, {
-		title: taskInput.value,
+		title: editTaskInput.value,
 	});
 
 	editButton.src = "./assets/edit-fill.svg";
 
 	const newSpan = document.createElement("span");
-	newSpan.textContent = taskInput.value;
-	taskInput.replaceWith(newSpan);
+	newSpan.textContent = editTaskInput.value;
+	editTaskInput.replaceWith(newSpan);
 };
 
 // New task input validation
