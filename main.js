@@ -1,11 +1,13 @@
+// json-server --p 3010 .\data\db.json
+
 todoTasksContainer = document.querySelector(".todo-tasks-container");
 doneTasksContainer = document.querySelector(".done-tasks-container");
-taskInput = document.querySelector(".todo-input");
+taskInput = document.querySelector(".task-input");
 addButton = document.querySelector(".btn-add");
 doneButton = document.querySelector(".btn-done");
 
 // Global Variables
-const url = "http://localhost:3000";
+const url = "http://localhost:3010";
 let nextId;
 
 // Functions
@@ -70,6 +72,7 @@ const deleteTask = async (listName, taskId, e) => {
 	e.preventDefault();
 	try {
 		await axios.delete(`${url}/${listName}/${taskId}`);
+
 		e.target.parentElement.parentElement.parentElement.remove();
 	} catch (error) {
 		throw new Error(error);
@@ -175,6 +178,7 @@ addButton.addEventListener("click", (e) => {
 	e.preventDefault();
 	createTask(taskInput.value, true);
 	addNewTaskToDB("todoTasksList", { title: taskInput.value, id: nextId++ });
+	taskInput.value = "";
 });
 
 document.querySelector(".tasks-container").addEventListener("click", (e) => {
