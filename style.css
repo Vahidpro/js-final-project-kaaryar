@@ -5,6 +5,7 @@
 	padding: 0;
 	box-sizing: border-box;
 	font-family: "Poppins", sans-serif;
+	transition: 0.5s;
 }
 input:focus-visible {
 	outline: 0;
@@ -62,6 +63,7 @@ section {
 	border: none;
 	border-radius: 8px;
 	padding: 6px;
+	transition: 0.5s all ease-in-out;
 }
 .edit-input:focus {
 	border: none;
@@ -84,4 +86,8 @@ ol {
 }
 .todo-item input {
 	max-width: 50%;
+}
+
+.todo-item span {
+	padding-left: 6px;
 }

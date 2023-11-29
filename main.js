@@ -73,6 +73,10 @@ const deleteTask = async (listName, taskId, e) => {
 	try {
 		await axios.delete(`${url}/${listName}/${taskId}`);
 
+		// e.target.parentElement.parentElement.parentElement.style.transform =
+		// 	"translateY(-120%)";
+		// setTimeout(() => {
+		// }, 500);
 		e.target.parentElement.parentElement.parentElement.remove();
 	} catch (error) {
 		throw new Error(error);
@@ -124,6 +128,7 @@ const editMode = async (taskId, e) => {
 	const taskSpan = taskItem.querySelector("span");
 
 	editTaskInput = document.createElement("input");
+	// editTaskInput.style.transition = "0.5s all ease-in-out";
 	editTaskInput.classList.add("edit-input");
 	editTaskInput.type = "text";
 	editTaskInput.value = taskSpan?.textContent;
@@ -179,6 +184,7 @@ addButton.addEventListener("click", (e) => {
 	createTask(taskInput.value, true);
 	addNewTaskToDB("todoTasksList", { title: taskInput.value, id: nextId++ });
 	taskInput.value = "";
+	addButton.disabled = true;
 });
 
 document.querySelector(".tasks-container").addEventListener("click", (e) => {
