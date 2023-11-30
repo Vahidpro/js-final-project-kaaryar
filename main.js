@@ -48,7 +48,7 @@ const createTask = async (task, isInTodoList) => {
 	let container = isInTodoList ? todoTasksContainer : doneTasksContainer;
 	listItem.innerHTML += `
 		<li class="hidden todo-item rounded-4 px-2 py-1 m-2 d-flex align-items-center justify-content-between " id="${id}">                   
-			<span class="${isInTodoList ? "" : "text-decoration-line-through"}">${
+			<span class="${isInTodoList ? "" : "text-decoration-line-through gray-text"}">${
 		task.title ? task.title : task
 	}</span>
 			<div class="icons d-flex">

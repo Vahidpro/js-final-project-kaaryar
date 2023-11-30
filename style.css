@@ -93,7 +93,7 @@ ol {
 	max-width: 44%;
 }
 .todo-item input {
-	max-width: 56%;
+	max-width: 60%;
 }
 
 .todo-item span {
@@ -105,4 +105,8 @@ ol {
 }
 .show {
 	transform: scale(1);
+}
+
+.gray-text {
+	color: #43464c;
 }
