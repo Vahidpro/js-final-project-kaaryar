@@ -1,7 +1,7 @@
-// json-server --p 3010 .\data\db.json
+// json-server --p 3000 .\data\db.json
 
 // Global Variables
-const url = "http://localhost:3010";
+const url = "http://localhost:3000";
 let nextId;
 
 todoTasksContainer = document.querySelector(".todo-tasks-container");
@@ -72,7 +72,11 @@ const deleteTask = async (listName, taskId, e) => {
 	e.preventDefault();
 	try {
 		await axios.delete(`${url}/${listName}/${taskId}`);
-		e.target.parentElement.parentElement.parentElement.remove();
+		e.target.parentElement.parentElement.parentElement.style.transform =
+			"scale(0)";
+		setTimeout(() => {
+			e.target.parentElement.parentElement.parentElement.remove();
+		}, 500);
 	} catch (error) {
 		throw new Error(error);
 	}

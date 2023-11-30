@@ -1,30 +1,18 @@
 {
-  "todoTasksList": [
-    {
-      "id": 4,
-      "title": "Do project"
-    },
-    {
-      "id": 6,
-      "title": "Practice German"
-    },
-    {
-      "title": "go to gym and back then go to the groceey store",
-      "id": 8
-    }
-  ],
-  "doneTasksList": [
-    {
-      "id": 5,
-      "title": "Call Alice"
-    },
-    {
-      "id": 2,
-      "title": "Meet friends"
-    },
-    {
-      "id": 7,
-      "title": "ddd"
-    }
-  ]
+	"todoTasksList": [
+		{ "id": 3, "title": "Go to grocery store" },
+		{ "id": 4, "title": "Do project" },
+		{ "id": 5, "title": "Call Alice" },
+		{ "id": 6, "title": "Practice German" }
+	],
+	"doneTasksList": [
+		{
+			"id": 1,
+			"title": "Go to gym"
+		},
+		{
+			"id": 2,
+			"title": "Meet friends"
+		}
+	]
 }
