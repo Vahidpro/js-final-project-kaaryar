@@ -1,7 +1,7 @@
-// json-server --p 3000 .\data\db.json
+// json-server --p 3010 .\data\db.json
 
 // Global Variables
-const url = "http://localhost:3000";
+const url = "http://localhost:3010";
 let nextId;
 
 todoTasksContainer = document.querySelector(".todo-tasks-container");
@@ -36,7 +36,7 @@ const getNextIdFromDB = async () => {
 
 getNextIdFromDB();
 
-const createTask = (task, isInTodoList) => {
+const createTask = async (task, isInTodoList) => {
 	if (task.id) {
 		id = task.id;
 	} else {
@@ -44,9 +44,8 @@ const createTask = (task, isInTodoList) => {
 	}
 
 	let container = isInTodoList ? todoTasksContainer : doneTasksContainer;
-
 	container.innerHTML += `
-		<li class="todo-item rounded-4 px-2 py-1 m-2 d-flex align-items-center justify-content-between " id="${id}">                   
+		<li class="hidden todo-item rounded-4 px-2 py-1 m-2 d-flex align-items-center justify-content-between " id="${id}">                   
 			<span class="${isInTodoList ? "" : "text-decoration-line-through"}">${
 		task.title ? task.title : task
 	}</span>
@@ -66,17 +65,23 @@ const createTask = (task, isInTodoList) => {
 				}
 			</div>
 		</li>`;
+	visualEffectShow(id);
 };
 
+const visualEffectShow = (taskId) => {
+	setTimeout(() => {
+		todoItem = document.getElementById(taskId);
+		todoItem.classList.remove("hidden");
+		todoItem.classList.add("show");
+	}, 100);
+};
 const deleteTask = async (listName, taskId, e) => {
 	e.preventDefault();
 	try {
 		await axios.delete(`${url}/${listName}/${taskId}`);
-		e.target.parentElement.parentElement.parentElement.style.transform =
-			"scale(0)";
 		setTimeout(() => {
 			e.target.parentElement.parentElement.parentElement.remove();
-		}, 500);
+		}, 100);
 	} catch (error) {
 		throw new Error(error);
 	}
@@ -105,8 +110,8 @@ initialRender("doneTasksList");
 const doneHandler = async (taskId, e) => {
 	const userData = await getTodoData(taskId, "todoTasksList");
 	addNewTaskToDB("doneTasksList", userData);
+	await deleteTask("todoTasksList", taskId, e);
 	createTask(userData, false);
-	deleteTask("todoTasksList", taskId, e);
 };
 const undoHandler = async (taskId, e) => {
 	const userData = await getTodoData(taskId, "doneTasksList");
@@ -189,18 +194,23 @@ document.querySelector(".tasks-container").addEventListener("click", (e) => {
 	e.preventDefault();
 
 	const taskId = e.target.parentElement.parentElement.parentElement.id;
+	const parentElement = e.target.parentElement.parentElement.parentElement;
 
 	if (e.target.classList.contains("btn-delete-todo")) {
+		parentElement.style.transform = "scale(0)";
 		deleteTask("todoTasksList", taskId, e);
 	} else if (e.target.classList.contains("btn-delete-done")) {
+		parentElement.style.transform = "scale(0)";
 		deleteTask("doneTasksList", taskId, e);
 	} else if (e.target.classList.contains("btn-done")) {
+		parentElement.style.transform = "scale(0)";
 		doneHandler(taskId, e);
 	} else if (e.target.classList.contains("btn-edit")) {
 		editMode(taskId, e);
 	} else if (e.target.classList.contains("btn-edit-done")) {
 		editTask(taskId, e);
 	} else if (e.target.classList.contains("btn-undo")) {
+		parentElement.style.transform = "scale(0)";
 		undoHandler(taskId, e);
 	}
 });
