@@ -43,8 +43,10 @@ const createTask = async (task, isInTodoList) => {
 		id = nextId;
 	}
 
+	const listItem = document.createElement("li");
+
 	let container = isInTodoList ? todoTasksContainer : doneTasksContainer;
-	container.innerHTML += `
+	listItem.innerHTML += `
 		<li class="hidden todo-item rounded-4 px-2 py-1 m-2 d-flex align-items-center justify-content-between " id="${id}">                   
 			<span class="${isInTodoList ? "" : "text-decoration-line-through"}">${
 		task.title ? task.title : task
@@ -65,6 +67,7 @@ const createTask = async (task, isInTodoList) => {
 				}
 			</div>
 		</li>`;
+	container.prepend(listItem);
 	visualEffectShow(id);
 };
 
@@ -73,7 +76,7 @@ const visualEffectShow = (taskId) => {
 		todoItem = document.getElementById(taskId);
 		todoItem.classList.remove("hidden");
 		todoItem.classList.add("show");
-	}, 100);
+	}, 300);
 };
 const deleteTask = async (listName, taskId, e) => {
 	e.preventDefault();
@@ -81,7 +84,7 @@ const deleteTask = async (listName, taskId, e) => {
 		await axios.delete(`${url}/${listName}/${taskId}`);
 		setTimeout(() => {
 			e.target.parentElement.parentElement.parentElement.remove();
-		}, 100);
+		}, 200);
 	} catch (error) {
 		throw new Error(error);
 	}
