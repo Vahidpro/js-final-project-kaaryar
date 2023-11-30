@@ -91,20 +91,28 @@ const deleteTask = async (listName, taskId, e) => {
 };
 
 const getTodoData = async (taskId, listName) => {
-	const response = await axios.get(`${url}/${listName}/${taskId}`);
-	const data = response.data;
-	const userData = { id: data.id, title: data.title };
-	return userData;
+	try {
+		const response = await axios.get(`${url}/${listName}/${taskId}`);
+		const data = response.data;
+		const userData = { id: data.id, title: data.title };
+		return userData;
+	} catch (error) {
+		throw new Error(error);
+	}
 };
 
 const initialRender = async (listName) => {
-	const tasks = await axios.get(`${url}/${listName}`);
+	try {
+		const tasks = await axios.get(`${url}/${listName}`);
 
-	tasks.data.forEach((task) => {
-		listName === "todoTasksList"
-			? createTask(task, true)
-			: createTask(task, false);
-	});
+		tasks.data.forEach((task) => {
+			listName === "todoTasksList"
+				? createTask(task, true)
+				: createTask(task, false);
+		});
+	} catch (error) {
+		throw new Error(error);
+	}
 };
 
 initialRender("todoTasksList");
@@ -145,17 +153,21 @@ const editMode = async (taskId, e) => {
 
 	editTaskInput.addEventListener("keydown", async (e) => {
 		if (e.key === "Enter") {
-			await axios.patch(`${url}/todoTasksList/${taskId}`, {
-				title: editTaskInput.value,
-			});
+			try {
+				await axios.patch(`${url}/todoTasksList/${taskId}`, {
+					title: editTaskInput.value,
+				});
 
-			editButton.src = "./assets/edit-fill.svg";
+				editButton.src = "./assets/edit-fill.svg";
 
-			const newSpan = document.createElement("span");
-			newSpan.textContent = editTaskInput.value;
-			editTaskInput.replaceWith(newSpan);
+				const newSpan = document.createElement("span");
+				newSpan.textContent = editTaskInput.value;
+				editTaskInput.replaceWith(newSpan);
 
-			isEditing = false;
+				isEditing = false;
+			} catch (error) {
+				throw new Error(error);
+			}
 		}
 	});
 };
