@@ -29,7 +29,7 @@ const getNextIdFromDB = async () => {
 		const doneIds = doneTasks.data.map((task) => task.id);
 
 		const allIds = [...todoIds, ...doneIds];
-		nextId = Math.max(...allIds) + 1;
+		nextId = Math.max(...allIds);
 	} catch (error) {
 		throw new Error(error);
 	}
@@ -200,7 +200,7 @@ taskInput.addEventListener("input", (e) => {
 // Add a new task
 addButton.addEventListener("click", (e) => {
 	e.preventDefault();
-	addNewTaskToDB("todoTasksList", { title: taskInput.value, id: nextId++ }).then(
+	addNewTaskToDB("todoTasksList", { title: taskInput.value, id: ++nextId }).then(
 		(res) => {
 			if (res.status === 201) {
 				createTask(taskInput.value, true);
