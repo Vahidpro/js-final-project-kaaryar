@@ -13,7 +13,8 @@ doneButton = document.querySelector(".btn-done");
 // Functions
 const addNewTaskToDB = async (toTheList, userData) => {
 	try {
-		await axios.post(`${url}/${toTheList}`, userData);
+		const res = await axios.post(`${url}/${toTheList}`, userData);
+		return res;
 	} catch (error) {
 		throw new Error(error);
 	}
@@ -199,10 +200,15 @@ taskInput.addEventListener("input", (e) => {
 // Add a new task
 addButton.addEventListener("click", (e) => {
 	e.preventDefault();
-	createTask(taskInput.value, true);
-	addNewTaskToDB("todoTasksList", { title: taskInput.value, id: nextId++ });
-	taskInput.value = "";
-	addButton.disabled = true;
+	addNewTaskToDB("todoTasksList", { title: taskInput.value, id: nextId++ }).then(
+		(res) => {
+			if (res.status === 201) {
+				createTask(taskInput.value, true);
+				taskInput.value = "";
+				addButton.disabled = true;
+			}
+		}
+	);
 });
 
 document.querySelector(".tasks-container").addEventListener("click", (e) => {
