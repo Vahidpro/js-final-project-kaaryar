@@ -1,17 +1,17 @@
 // json-server --p 3010 .\data\db.json
 
+// Global Variables
+const url = "http://localhost:3010";
+let nextId;
+
 todoTasksContainer = document.querySelector(".todo-tasks-container");
 doneTasksContainer = document.querySelector(".done-tasks-container");
 taskInput = document.querySelector(".task-input");
 addButton = document.querySelector(".btn-add");
 doneButton = document.querySelector(".btn-done");
 
-// Global Variables
-const url = "http://localhost:3010";
-let nextId;
-
 // Functions
-addNewTaskToDB = async (toTheList, userData) => {
+const addNewTaskToDB = async (toTheList, userData) => {
 	try {
 		await axios.post(`${url}/${toTheList}`, userData);
 	} catch (error) {
@@ -19,7 +19,7 @@ addNewTaskToDB = async (toTheList, userData) => {
 	}
 };
 
-const getNextId = async () => {
+const getNextIdFromDB = async () => {
 	try {
 		const todoTasks = await axios.get(`${url}/todoTasksList`);
 		const doneTasks = await axios.get(`${url}/doneTasksList`);
@@ -34,9 +34,9 @@ const getNextId = async () => {
 	}
 };
 
-getNextId();
+getNextIdFromDB();
 
-createTask = (task, isInTodoList) => {
+const createTask = (task, isInTodoList) => {
 	if (task.id) {
 		id = task.id;
 	} else {
@@ -72,11 +72,6 @@ const deleteTask = async (listName, taskId, e) => {
 	e.preventDefault();
 	try {
 		await axios.delete(`${url}/${listName}/${taskId}`);
-
-		// e.target.parentElement.parentElement.parentElement.style.transform =
-		// 	"translateY(-120%)";
-		// setTimeout(() => {
-		// }, 500);
 		e.target.parentElement.parentElement.parentElement.remove();
 	} catch (error) {
 		throw new Error(error);
@@ -128,7 +123,6 @@ const editMode = async (taskId, e) => {
 	const taskSpan = taskItem.querySelector("span");
 
 	editTaskInput = document.createElement("input");
-	// editTaskInput.style.transition = "0.5s all ease-in-out";
 	editTaskInput.classList.add("edit-input");
 	editTaskInput.type = "text";
 	editTaskInput.value = taskSpan?.textContent;
