@@ -27,7 +27,7 @@ li {
 }
 
 .wrapper {
-	max-width: 25rem;
+	max-width: 30rem;
 	margin: 1rem auto;
 	height: 400px;
 }
@@ -58,7 +58,7 @@ section {
 	background-color: #d8d6d6;
 }
 .done-list-section {
-	background-color: #cdb7b7;
+	background-color: #b2bcce;
 }
 
 .todo-list-section .todo-item,
@@ -90,10 +90,10 @@ ol {
 }
 
 .todo-item .icons {
-	max-width: 40%;
+	max-width: 44%;
 }
 .todo-item input {
-	max-width: 50%;
+	max-width: 56%;
 }
 
 .todo-item span {

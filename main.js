@@ -46,7 +46,7 @@ const createTask = (task, isInTodoList) => {
 	let container = isInTodoList ? todoTasksContainer : doneTasksContainer;
 
 	container.innerHTML += `
-		<li class="todo-item rounded-4 px-2 m-2 d-flex align-items-center justify-content-between " id="${id}">                   
+		<li class="todo-item rounded-4 px-2 py-1 m-2 d-flex align-items-center justify-content-between " id="${id}">                   
 			<span class="${isInTodoList ? "" : "text-decoration-line-through"}">${
 		task.title ? task.title : task
 	}</span>
